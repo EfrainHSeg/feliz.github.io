@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta Explosiva de Navidad</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #mensaje {
+            display: none;
+            font-size: 36px;
+            color: #ff0000;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #imagen-container {
+            position: relative;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        #imagen {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="imagen-container">
+        <img id="imagen" src="img/1.jpg" alt="Feliz Navidad">
+    </div>
+    <div id="mensaje">¡La magia de la Navidad está por llegar a la familia Huaman Segura!</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+    <script>
+        // Lista de URL de imágenes
+        var imagenes = [
+            'img/1.jpg',
+            'img/2.jpg',
+            'img/3.jpg',
+            'img/4.jpg'
+            // Agrega más URL de imágenes según sea necesario
+        ];
+
+        // Obtener la fecha y hora actual
+        var fechaActual = new Date();
+
+        // Configurar la fecha y hora de apertura (medianoche)
+        var fechaApertura = new Date();
+        fechaApertura.setHours(0, 0, 0, 0);
+
+        // Calcular el tiempo restante hasta la apertura
+        var tiempoRestante = fechaApertura - fechaActual;
+
+        // Función para mostrar el mensaje cuando sea la hora adecuada
+        function mostrarMensaje() {
+            document.getElementById('mensaje').style.display = 'block';
+
+            // Esperar unos segundos antes de activar el efecto de explosión
+            setTimeout(function () {
+                // Aplicar el efecto de explosión con anime.js
+                anime({
+                    targets: '#imagen',
+                    scale: [1, 1.2],
+                    rotate: '2turn',
+                    duration: 2000,
+                    easing: 'easeInOutQuad',
+                });
+            }, 3000); // Esperar 3 segundos antes de activar el efecto
+        }
+
+        // Función para cambiar la imagen cada hora hasta la medianoche
+        function cambiarImagenCadaHora() {
+            var horaActual = new Date().getHours();
+
+            // Cambiar la URL de la imagen cada vez que se muestra un nuevo mensaje
+            document.getElementById('imagen').src = imagenes[horaActual];
+
+            // Si es medianoche, mostrar el mensaje de "La magia de la Navidad está por llegar a la familia Huaman Segura"
+            if (horaActual === 0) {
+                document.getElementById('mensaje').innerText = '¡La magia de la Navidad está por llegar a la familia Huaman Segura!';
+                setTimeout(mostrarMensaje, 2000); // Esperar 2 segundos antes de activar el efecto de explosión
+                return;
+            }
+
+            // Configurar el temporizador para cambiar la imagen en la siguiente hora
+            setTimeout(cambiarImagenCadaHora, 60 * 60 * 1000); // 60 minutos * 60 segundos * 1000 milisegundos
+        }
+
+        // Configurar el temporizador para abrir la tarjeta a medianoche
+        setTimeout(function() {
+            cambiarImagenCadaHora();
+        }, tiempoRestante);
+    </script>
+</body>
+</html>
+
